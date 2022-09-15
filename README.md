@@ -30,8 +30,8 @@
 
 ```bash
 # Clonar el repositorio
-$ git clone https://github.com/Manuekle/iot_asistencia.git
-$ cd iot_asistencia
+$ git clone https://github.com/project-iot-fup/Backend
+$ cd Backend
 # Instalar el entorno virtual
 $ pip install virtualenv
 $ python -m virtualenv env
@@ -44,15 +44,6 @@ $ cd backend
 $ pip install -r requirements.txt
 # Correr proyecto
 $ python manage.py runserver
-```
-#### **Frontend** 📦
-
-```bash
-$ cd frontend
-# Instalar las dependencias
-$ npm install
-# Correr proyecto
-$ npm start
 ```
 
 ### **RaspberryPi 3**

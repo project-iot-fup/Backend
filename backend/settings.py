@@ -133,7 +133,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'api-test',
+        'NAME': 'iot',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',

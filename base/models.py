@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 # Create your models here.
 
 
 class Profesor(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    nombre = models.CharField(User.first_name, max_length=50)
-    apellido = models.CharField(User.last_name, max_length=50)
+    nombre = models.CharField(max_length=200, null=True, blank=True)
+    apellido = models.CharField(max_length=200, null=True, blank=True)
     cedula = models.CharField(max_length=50)
     _id = models.AutoField(primary_key=True, editable=False)
 
@@ -26,8 +27,8 @@ class Materia(models.Model):
 
 class Estudiante(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    nombre = models.CharField(User.first_name, max_length=50)
-    apellido = models.CharField(User.last_name, max_length=50)
+    nombre = models.CharField(max_length=200, null=True, blank=True)
+    apellido = models.CharField(max_length=200, null=True, blank=True)
     cedula = models.CharField(max_length=50)
     materias = models.ForeignKey(Materia, on_delete=models.SET_NULL, null=True)
     # Codigo HEX desde el Arduino

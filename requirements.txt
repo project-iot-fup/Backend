@@ -16,6 +16,7 @@ Django==4.1.1
 django-ckeditor==5.9.0
 django-cors-headers==3.5.0
 django-crispy-forms==1.9.2
+django-environ==0.9.0
 django-filter==2.3.0
 django-js-asset==1.2.2
 django-prices==2.3.0

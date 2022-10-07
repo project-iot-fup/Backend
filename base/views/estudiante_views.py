@@ -20,7 +20,7 @@ def arduino():
     while True:
         sarduino = arduino.readline()
         print(sarduino.strip())
-        #c = input("igrese ::")
+        # c = input("igrese ::")
         c += 1
         if c == 4:
             valor = sarduino.strip()
@@ -34,14 +34,13 @@ def arduino():
 
 @api_view(['GET'])
 def getEstudiantes(request):
-    estudiantes = Estudiante.objects.all()
     try:
+        estudiantes = Estudiante.objects.order_by('-createdAt')
         serializer = EstudianteSerializer(estudiantes, many=True)
-        message = "Estudiantes encontrados"
-        return Response(message, serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     except:
         message = {'detail': 'No se encontraron estudiantes'}
-        return Response(message, status=status.HTTP_404_NOT_FOUND)
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -54,9 +53,9 @@ def getEstudiante(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAdminUser, IsAuthenticated])
 def createEstudiante(request):
-    user = request.user
 
     try:
+        user = request.user
         estudiante = Estudiante.objects.create(
             user=user,
             nombre='Nombre',

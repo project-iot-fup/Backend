@@ -6,8 +6,8 @@
 
 - [x] Raspberry Pi 3 
 - [x] Arduino UNO 
-- [ ] Tarjeta RFID 
-- [ ] Sensor o Modulo MFRC-522 
+- [x] Tarjeta RFID 
+- [x] Sensor o Modulo MFRC-522 
 
 #### Tecnologias 🔌
 

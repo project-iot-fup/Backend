@@ -4,11 +4,12 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
-class Profesor(models.Model):
+class Profesores(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     nombre = models.CharField(max_length=200, null=True, blank=True)
     apellido = models.CharField(max_length=200, null=True, blank=True)
     cedula = models.CharField(max_length=50)
+    createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
@@ -18,7 +19,8 @@ class Profesor(models.Model):
 class Materia(models.Model):
     nombre = models.CharField(max_length=50)
     profesor = models.ForeignKey(
-        Profesor, on_delete=models.SET_NULL, null=True)
+        Profesores, on_delete=models.SET_NULL, null=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
@@ -30,10 +32,12 @@ class Estudiante(models.Model):
     nombre = models.CharField(max_length=200, null=True, blank=True)
     apellido = models.CharField(max_length=200, null=True, blank=True)
     cedula = models.CharField(max_length=50)
+    # array de materia
     materias = models.ForeignKey(Materia, on_delete=models.SET_NULL, null=True)
     # Codigo HEX desde el Arduino
     llavero = models.CharField(max_length=45, unique=True)
     llavero_status = models.BooleanField(default=False)
+    createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
@@ -52,9 +56,12 @@ class Sala(models.Model):
     sede = models.CharField(max_length=50, choices=sedes,
                             default='Sede San Jose')
     profesor = models.ForeignKey(
-        Profesor, on_delete=models.SET_NULL, null=True)
+        Profesores, on_delete=models.SET_NULL, null=True)
     estudiantes = models.ForeignKey(
         Estudiante, on_delete=models.SET_NULL, null=True)
+    fecha_inicio = models.DateTimeField(auto_now_add=True)
+    fecha_fin = models.DateTimeField(auto_now_add=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
@@ -64,6 +71,7 @@ class Sala(models.Model):
 class Asistencia(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     sala = models.ForeignKey(Sala, on_delete=models.SET_NULL, null=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
@@ -73,6 +81,7 @@ class Asistencia(models.Model):
 class Reporte(models.Model):
     asistencia = models.OneToOneField(
         Asistencia, on_delete=models.CASCADE, null=True, blank=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):

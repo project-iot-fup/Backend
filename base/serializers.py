@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from base.models import Profesor, Materia, Estudiante, Sala, Asistencia, Reporte
+from base.models import Profesores, Materia, Estudiante, Sala, Asistencia, Reporte
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -38,9 +38,9 @@ class UserSerializerWithToken(UserSerializer):
         return str(token.access_token)
 
 
-class ProfesorSerializer(serializers.ModelSerializer):
+class ProfesoresSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Profesor
+        model = Profesores
         fields = '__all__'
 
 

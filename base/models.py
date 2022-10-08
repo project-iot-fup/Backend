@@ -41,8 +41,8 @@ class Estudiante(models.Model):
 
 
 class Llavero(models.Model):
-    llavero = models.CharField(max_length=50)
-    llavero_status = models.BooleanField(default=False)
+    tag = models.CharField(max_length=50)
+    tag_status = models.BooleanField(default=False)
     estudiante = models.ForeignKey(
         Estudiante, on_delete=models.SET_NULL, null=True)
     createdAt = models.DateTimeField(auto_now_add=True)

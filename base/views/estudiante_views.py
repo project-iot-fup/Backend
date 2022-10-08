@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from base.models import Estudiante
-from base.serializers import *
+from base.serializers import EstudianteSerializer
 from rest_framework import status
 
 

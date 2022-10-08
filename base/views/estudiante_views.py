@@ -6,29 +6,6 @@ from base.models import Estudiante
 from base.serializers import *
 from rest_framework import status
 
-import serial, time
-
-
-def arduino():
-    arduino = serial.Serial('COM3', 9600)
-    time.sleep(2)
-    rawString = arduino.readline()
-    print(rawString)
-    c = 0
-    hexa = ""
-    while True:
-        sarduino = arduino.readline()
-        print(sarduino.strip())
-        c += 1
-        if c == 4:
-            valor = sarduino.strip()
-            hexa = str(valor).split(":  ")
-            hexa = hexa[1].replace("'", "")
-        if c == 5:
-            break
-    arduino.close()
-    return hexa
-
 
 @api_view(['GET'])
 def getEstudiantes(request):
@@ -43,9 +20,13 @@ def getEstudiantes(request):
 
 @api_view(['GET'])
 def getEstudiante(request, pk):
-    estudiante = Estudiante.objects.get(_id=pk)
-    serializer = EstudianteSerializer(estudiante, many=False)
-    return Response(serializer.data)
+    try:
+        estudiante = Estudiante.objects.get(_id=pk)
+        serializer = EstudianteSerializer(estudiante, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except:
+        message = {'detail': 'No se encontro el estudiante'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -61,9 +42,8 @@ def createEstudiante(request):
             materias='',
         )
 
-        serializer = EstudianteSerializer(estudiante, many=False)
-        message = {'detail': 'Estudiante creado exitosamente'}
-        return Response(message, serializer.data, status=status.HTTP_200_OK)
+        serializer = EstudianteSerializer(estudiante, many=False)        
+        return Response(serializer.data, status=status.HTTP_200_OK)
     except:
         message = {'detail': 'Este estudiante ya existe'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
@@ -73,8 +53,6 @@ def createEstudiante(request):
 @permission_classes([IsAdminUser])
 def updateEstudiante(request, pk):
     try:
-        test = arduino()
-        print(test)
         data = request.data
         estudiante = Estudiante.objects.get(_id=pk)
         estudiante.nombre = data['nombre']
@@ -84,9 +62,7 @@ def updateEstudiante(request, pk):
         estudiante.save()
 
         serializer = EstudianteSerializer(estudiante, many=False)
-        print('success')
-        message = {'detail': 'Estudiante actualizado exitosamente'}
-        return Response(message, serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     except:
         print('error')
         message = {'detail': 'Se produjo un error al actualizar el estudiante'}
@@ -95,7 +71,12 @@ def updateEstudiante(request, pk):
 
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
-def deleteEstudiante(request, pk):
-    estudiante = Estudiante.objects.get(_id=pk)
-    estudiante.delete()
-    return Response('Estudiante eliminado')
+def deleteEstudiante(pk):
+    try:
+        estudiante = Estudiante.objects.get(_id=pk)
+        estudiante.delete()
+        message = {'detail': 'Estudiante eliminado exitosamente'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail': 'Se produjo un error al eliminar el estudiante'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)

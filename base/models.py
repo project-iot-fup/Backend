@@ -27,29 +27,29 @@ class Materia(models.Model):
         return self.nombre
 
 
-class Llavero(models.Model):
-    llavero = models.CharField(max_length=50)
-    llavero_status = models.BooleanField(default=False)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    _id = models.AutoField(primary_key=True, editable=False)
-
-    def __str__(self):
-        return self.llavero
-
-
 class Estudiante(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     nombre = models.CharField(max_length=200, null=True, blank=True)
     apellido = models.CharField(max_length=200, null=True, blank=True)
     cedula = models.CharField(max_length=50)
     materias = models.CharField(max_length=200, null=True, blank=True)
-    llavero = models.ForeignKey(
-        Llavero, on_delete=models.SET_NULL, null=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
         return self.nombre
+
+
+class Llavero(models.Model):
+    llavero = models.CharField(max_length=50)
+    llavero_status = models.BooleanField(default=False)
+    estudiante = models.ForeignKey(
+        Estudiante, on_delete=models.SET_NULL, null=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.estudiante.nombre + " " + self.llavero
 
 
 class Sala(models.Model):

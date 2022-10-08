@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from base.models import Llavero, Estudiante
@@ -19,7 +19,9 @@ def arduino():
         c += 1
         if c == 4:
             valor = read.strip()
-            hexa = str(valor).split("b")[1]
+            # b'C3C06C0C' -> C3C06C0C
+            convert = valor.decode('utf-8')
+            hexa = str(convert)
             print(hexa)
         if c == 5:
             break
@@ -28,8 +30,8 @@ def arduino():
 
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser, IsAuthenticated])
-def createLlavero(request):
+@permission_classes([IsAdminUser])
+def createLlavero(request):    
     try:
         estudiante = Estudiante.objects.get(user=request.user)
         llavero = Llavero.objects.create(
@@ -37,9 +39,11 @@ def createLlavero(request):
             tag_status=False,
             estudiante=estudiante,
         )
-
         serializer = LlaveroSerializer(llavero, many=False)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if llavero.tag != '':
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'No se pudo crear el llavero'}, status=status.HTTP_400_BAD_REQUEST)
     except:
         message = {'detail': 'Este Llavero ya existe'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)

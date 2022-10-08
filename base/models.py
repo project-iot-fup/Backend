@@ -49,7 +49,7 @@ class Llavero(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return self.estudiante.nombre + " " + self.llavero
+        return self.tag
 
 
 class Sala(models.Model):

@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from base.models import Estudiante
@@ -30,7 +30,7 @@ def getEstudiante(request, pk):
 
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser, IsAuthenticated])
+@permission_classes([IsAdminUser])
 def createEstudiante(request):
     try:
         user = request.user
@@ -50,7 +50,7 @@ def createEstudiante(request):
 
 
 @api_view(['PUT'])
-@permission_classes([IsAdminUser])
+@permission_classes([IsAdminUser, IsAuthenticated])
 def updateEstudiante(request, pk):
     try:
         data = request.data

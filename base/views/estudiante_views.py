@@ -59,8 +59,6 @@ def createEstudiante(request):
             apellido='',
             cedula='',
             materias='',
-            llavero=arduino(),
-            llavero_status=False,
         )
 
         serializer = EstudianteSerializer(estudiante, many=False)
@@ -76,12 +74,12 @@ def createEstudiante(request):
 def updateEstudiante(request, pk):
     try:
         test = arduino()
+        print(test)
         data = request.data
         estudiante = Estudiante.objects.get(_id=pk)
         estudiante.nombre = data['nombre']
         estudiante.apellido = data['apellido']
         estudiante.materias = data['materias']
-        estudiante.llavero = test
 
         estudiante.save()
 

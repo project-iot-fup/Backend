@@ -10,40 +10,61 @@ import serial, time
 
 
 def arduino():
-    port = serial.Serial('COM3', 9600, timeout=1)
+    port = serial.Serial('COM3', 9600)
     time.sleep(2)
     c = 0
     hexa = []
+    print("Leyendo...")
     while True:
         read = port.readline()
         c += 1
         if c == 4:
             valor = read.strip()
-            # b'C3C06C0C' -> C3C06C0C
             convert = valor.decode('utf-8')
             hexa = str(convert)
             print(hexa)
+            port.close()
+            return hexa
         if c == 5:
             break
-    port.close()
-    return hexa
+    
 
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
-def createLlavero(request):    
+def createLlavero(request):
     try:
-        estudiante = Estudiante.objects.get(user=request.user)
-        llavero = Llavero.objects.create(
-            tag=arduino(),
-            tag_status=False,
-            estudiante=estudiante,
-        )
-        serializer = LlaveroSerializer(llavero, many=False)
-        if llavero.tag != '':
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        if Llavero.objects.filter(tag=arduino()):
+            message = 'Llavero ya existe'
+            print(message)
+            return Response({'message': message}, status=status.HTTP_400_BAD_REQUEST)
+       
+        if arduino() == '':
+            message = 'No se encontro llavero'
+            print(message)
+            return Response({'message': message}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'detail': 'No se pudo crear el llavero'}, status=status.HTTP_400_BAD_REQUEST)
+            estudiante = Estudiante.objects.get(user=request.user)
+            llavero = Llavero.objects.create(
+                tag=arduino(),
+                tag_status=False,
+                estudiante=estudiante,
+            )
+            serializer = LlaveroSerializer(llavero, many=False)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
     except:
-        message = {'detail': 'Este Llavero ya existe'}
+        message = {'detail': 'No se logro crear el llavero'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+@api_view(['GET'])
+def estudianteLlavero(request, pk):
+    try:
+        llavero = Llavero.objects.filter(estudiante=pk)
+        serializer = LlaveroSerializer(llavero, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except:
+        message = {'detail': 'No se encontraron llaveros'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+

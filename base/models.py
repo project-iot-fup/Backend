@@ -45,12 +45,13 @@ class Llavero(models.Model):
     tag_status = models.BooleanField(default=False)
     estudiante = models.ForeignKey(
         Estudiante, on_delete=models.SET_NULL, null=True)
+    updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
         return self.tag
-
+    
 
 class Sala(models.Model):
 

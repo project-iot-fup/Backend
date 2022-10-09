@@ -24,6 +24,7 @@ def getEstudiante(request, pk):
         estudiante = Estudiante.objects.get(_id=pk)
         serializer = EstudianteSerializer(estudiante, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
+        
     except:
         message = {'detail': 'No se encontro el estudiante'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)

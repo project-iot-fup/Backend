@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./staticfiles/django-rest-framework/rest_framework/templatetags",
+        "./staticfiles/django-rest-framework"
+    ]
+}

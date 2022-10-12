@@ -10,43 +10,32 @@ import serial, time
 
 
 def arduino():
-    port = serial.Serial('COM3', 9600)
+    port = serial.Serial('COM3', 9600, timeout=1)
     time.sleep(2)
-    c = 0
-    hexa = []
-    print("Leyendo...")
-    while True:
-        read = port.readline()
-        c += 1
-        if c == 4:
-            valor = read.strip()
-            convert = valor.decode('utf-8')
-            hexa = str(convert)
-            print(hexa)
-            port.close()
-            return hexa
-        if c == 5:
-            break
-    
-
+    read = port.readline()
+    hexa = read.decode('utf-8')
+    port.close()
+    return hexa
+        
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def createLlavero(request):
     try:
-        if Llavero.objects.filter(tag=arduino()):
+        code = arduino()
+        if Llavero.objects.filter(tag=code).exists(): 
             message = 'Llavero ya existe'
             print(message)
             return Response({'message': message}, status=status.HTTP_400_BAD_REQUEST)
        
-        if arduino() == '':
+        if code == '':
             message = 'No se encontro llavero'
             print(message)
             return Response({'message': message}, status=status.HTTP_400_BAD_REQUEST)
         else:
             estudiante = Estudiante.objects.get(user=request.user)
             llavero = Llavero.objects.create(
-                tag=arduino(),
+                tag=code,
                 tag_status=False,
                 estudiante=estudiante,
             )

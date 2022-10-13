@@ -4,10 +4,10 @@
 
 #### Dispositivos 💻
 
-- [x] Raspberry Pi 3 
-- [x] Arduino UNO 
-- [x] Tarjeta RFID 
-- [x] Sensor o Modulo MFRC-522 
+- [x] Raspberry Pi 3
+- [x] Arduino UNO
+- [x] Tarjeta RFID
+- [x] Sensor o Modulo MFRC-522
 
 #### Tecnologias 🔌
 
@@ -24,6 +24,7 @@
 - [x] Formik
 
 ### Instalación 🔧
+
 #### Importante Tener instalado Python y NodeJs 📣
 
 #### **Backend** 📦
@@ -63,4 +64,8 @@ $ Manuel Esteban Erazo
 $ Jose Domingo Aranda Calambas
 $ Jhon Leon
 ```
+
+## Licencia MIT ⚖️
+
+Este proyecto está bajo la Licencia (MIT) - mira el archivo [LICENSE.md](LICENSE.md) para detalles
 ---

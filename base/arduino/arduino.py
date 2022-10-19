@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import time
-import serial
+
 import environ
 import psycopg2
 import serial

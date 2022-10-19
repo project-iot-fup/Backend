@@ -1,12 +1,12 @@
+import time
+
+import serial
+from base.models import Estudiante, Llavero
+from base.serializers import LlaveroSerializer
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
-from base.models import Llavero, Estudiante
-from base.serializers import LlaveroSerializer
-from rest_framework import status
-
-import serial, time
 
 
 def arduino():
@@ -14,21 +14,21 @@ def arduino():
     time.sleep(2)
     read = port.readline()
     hexa = read.decode('utf-8')
-    value = hexa.replace(" ", "")
+    value = hexa.replace("", "")
     port.close()
     return value
-        
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createLlavero(request):
     try:
         code = arduino()
-        if Llavero.objects.filter(tag=code).exists(): 
+        if Llavero.objects.filter(tag=code).exists():
             message = 'Llavero ya existe'
             print(message)
             return Response({'message': message}, status=status.HTTP_400_BAD_REQUEST)
-       
+
         if code == '':
             message = 'No se encontro llavero'
             print(message)
@@ -46,8 +46,8 @@ def createLlavero(request):
     except:
         message = {'detail': 'No se logro crear el llavero'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
-    
-    
+
+
 @api_view(['GET'])
 def estudianteLlavero(request, pk):
     try:
@@ -57,4 +57,3 @@ def estudianteLlavero(request, pk):
     except:
         message = {'detail': 'No se encontraron llaveros'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
-

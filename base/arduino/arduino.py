@@ -31,7 +31,7 @@ def update_llavero(hexa):
     curr.execute(
         "UPDATE base_llavero SET tag_status = true WHERE tag = %s", (hexa,))
     conn.commit()
-    print("Llavero actualizado")
+    print("Tag Status: Activo")
 
 
 def get_llavero(hexa):
@@ -70,8 +70,3 @@ if __name__ == '__main__':
                 print("KeyboardInterrupt has been caught.")
 
 
-# curr.execute("SELECT * FROM base_llavero WHERE tag = %s", (hexa,))
-# row = curr.fetchone()
-# if row:
-#     print("Llavero encontrado")
-#     print(row)

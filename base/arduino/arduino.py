@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-import serial
 import time
-import psycopg2
+import serial
 import environ
+import psycopg2
+import serial
 
 env = environ.Env()
 environ.Env.read_env()

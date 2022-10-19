@@ -21,7 +21,7 @@ def getEstudiantes(request):
 @api_view(['GET'])
 def getEstudiante(request, pk):
     try:
-        estudiante = Estudiante.objects.get(_id=pk)
+        estudiante = Estudiante.objects.get(user=pk)
         serializer = EstudianteSerializer(estudiante, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
@@ -34,9 +34,10 @@ def getEstudiante(request, pk):
 @permission_classes([IsAdminUser])
 def createEstudiante(request):
     try:
-        user = request.user
+        # user = request.user
         estudiante = Estudiante.objects.create(
-            user=user,
+            user='',
+            photo='',
             nombre='',
             apellido='',
             cedula='',
@@ -51,12 +52,13 @@ def createEstudiante(request):
 
 
 @api_view(['PUT'])
-@permission_classes([IsAdminUser, IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def updateEstudiante(request, pk):
     try:
         data = request.data
-        estudiante = Estudiante.objects.get(_id=pk)
+        estudiante = Estudiante.objects.get(user=pk)
         estudiante.nombre = data['nombre']
+        estudiante.photo = data['photo']
         estudiante.apellido = data['apellido']
         estudiante.materias = data['materias']
 
@@ -74,7 +76,7 @@ def updateEstudiante(request, pk):
 @permission_classes([IsAdminUser])
 def deleteEstudiante(pk):
     try:
-        estudiante = Estudiante.objects.get(_id=pk)
+        estudiante = Estudiante.objects.get(user=pk)
         estudiante.delete()
         message = {'detail': 'Estudiante eliminado exitosamente'}
         return Response(message, status=status.HTTP_200_OK)

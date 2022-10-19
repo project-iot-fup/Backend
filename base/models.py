@@ -17,7 +17,14 @@ class Profesores(models.Model):
 
 
 class Materia(models.Model):
+    
+    tipos = (
+        ('Nocturna', 'Nocturna'),
+        ('Diurna', 'Diurna'),
+    )
+    
     nombre = models.CharField(max_length=50)
+    jornada = models.CharField(max_length=50, choices=tipos, default='Diurna')
     profesor = models.ForeignKey(
         Profesores, on_delete=models.SET_NULL, null=True)
     createdAt = models.DateTimeField(auto_now_add=True)
@@ -29,9 +36,10 @@ class Materia(models.Model):
 
 class Estudiante(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    photo = models.ImageField(null=True, blank=True)
     nombre = models.CharField(max_length=200, null=True, blank=True)
     apellido = models.CharField(max_length=200, null=True, blank=True)
-    cedula = models.CharField(max_length=50)
+    cedula = models.CharField(max_length=50, null=True, blank=True)
     materias = models.CharField(max_length=200, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
@@ -64,12 +72,8 @@ class Sala(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.SET_NULL, null=True)
     sede = models.CharField(max_length=50, choices=sedes,
                             default='Sede San Jose')
-    profesor = models.ForeignKey(
-        Profesores, on_delete=models.SET_NULL, null=True)
-    estudiantes = models.ForeignKey(
-        Estudiante, on_delete=models.SET_NULL, null=True)
-    fecha_inicio = models.DateTimeField(auto_now_add=True)
-    fecha_fin = models.DateTimeField(auto_now_add=True)
+    fecha_inicio = models.DateTimeField(editable=True)
+    fecha_fin = models.DateTimeField(editable=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
@@ -78,9 +82,10 @@ class Sala(models.Model):
 
 
 class Asistencia(models.Model):
+    estudiante_tag = models.CharField(max_length=50)
     fecha = models.DateTimeField(auto_now_add=True)
-    sala = models.ForeignKey(Sala, on_delete=models.SET_NULL, null=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    sala = models.ForeignKey(Sala, on_delete=models.SET_NULL, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
@@ -95,3 +100,12 @@ class Reporte(models.Model):
 
     def __str__(self):
         return self._id
+
+
+class Test(models.Model):
+    tag = models.CharField(max_length=50)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.nombre

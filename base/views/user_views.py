@@ -39,11 +39,16 @@ def registerUser(request):
             password=make_password(data['password'])
         )
 
-        serializer = UserSerializerWithToken(user, many=False)
-        return Response(serializer.data)
+        serializerUser = UserSerializerWithToken(user, many=False)
+        return Response(serializerUser.data, status=status.HTTP_200_OK)
     except:
-        message = {'detail': 'User with this email already exists'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        if User.objects.filter(username=data['email']).exists():
+            message = {
+                'detail': 'El correo con el que intentas registrarte ya existe'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            message = {'detail': 'Error al crear el usuario'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT'])

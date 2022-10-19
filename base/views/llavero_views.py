@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from base.models import Llavero, Estudiante
@@ -14,12 +14,13 @@ def arduino():
     time.sleep(2)
     read = port.readline()
     hexa = read.decode('utf-8')
+    value = hexa.replace(" ", "")
     port.close()
-    return hexa
+    return value
         
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser])
+@permission_classes([IsAuthenticated])
 def createLlavero(request):
     try:
         code = arduino()

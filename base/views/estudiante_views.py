@@ -24,30 +24,31 @@ def getEstudiante(request, pk):
         estudiante = Estudiante.objects.get(user=pk)
         serializer = EstudianteSerializer(estudiante, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+
     except:
         message = {'detail': 'No se encontro el estudiante'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser])
+@permission_classes([IsAuthenticated])
 def createEstudiante(request):
     try:
-        # user = request.user
+        user = request.user
         estudiante = Estudiante.objects.create(
-            user='',
+            user=user,
             photo='',
-            nombre='',
+            nombre=user.first_name,
             apellido='',
             cedula='',
             materias='',
         )
 
-        serializer = EstudianteSerializer(estudiante, many=False)        
+        serializer = EstudianteSerializer(estudiante, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except:
-        message = {'detail': 'Este estudiante ya existe'}
+        message = {'detail': 'Error al crear el estudiante'}
+        # print(message)
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -67,7 +68,7 @@ def updateEstudiante(request, pk):
         serializer = EstudianteSerializer(estudiante, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except:
-        print('error')
+        # print('error')
         message = {'detail': 'Se produjo un error al actualizar el estudiante'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 

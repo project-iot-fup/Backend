@@ -40,7 +40,9 @@ def registerUser(request):
         )
 
         serializerUser = UserSerializerWithToken(user, many=False)
-        return Response(serializerUser.data, status=status.HTTP_200_OK)
+        
+        return Response(serializerUser.data, status=status.HTTP_201_CREATED)
+        
     except:
         if User.objects.filter(username=data['email']).exists():
             message = {

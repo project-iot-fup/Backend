@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from base.models import Profesores, Materia, Estudiante, Llavero, Sala, Asistencia, Reporte
+from base.models import Profesores, Materia, Estudiante, Llavero, Sala, Asistencia
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -46,36 +46,76 @@ class ProfesoresSerializer(serializers.ModelSerializer):
 
 
 class MateriaSerializer(serializers.ModelSerializer):
+
+    
     class Meta:
         model = Materia
         fields = '__all__'
-
+        
+        
 
 class EstudianteSerializer(serializers.ModelSerializer):
+    materia = MateriaSerializer(many=False)
     class Meta:
         model = Estudiante
         fields = '__all__'
+        
+    def get_materia(self, obj):
+        materia = obj.materia
+        serializer = MateriaSerializer(materia, many=False)
+        return serializer.data
 
 
 class LlaveroSerializer(serializers.ModelSerializer):
+    estudiante = EstudianteSerializer(many=False)
     class Meta:
         model = Llavero
         fields = '__all__'
 
-
-class SalaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sala
-        fields = '__all__'
-
-
+    def get_estudiante(self, obj):
+        estudiante = obj.estudiante
+        serializer = EstudianteSerializer(estudiante, many=False)
+        return serializer.data
+    
+    
 class AsistenciaSerializer(serializers.ModelSerializer):
+    llavero = LlaveroSerializer(many=False)
     class Meta:
         model = Asistencia
         fields = '__all__'
+        
+        
+    def get_llavero(self, obj):
+        llavero = obj.llavero
+        serializer = LlaveroSerializer(llavero, many=False)
+        return serializer.data
 
-
-class ReporteSerializer(serializers.ModelSerializer):
+class SalaSerializer(serializers.ModelSerializer):
+    materia = MateriaSerializer(many=False)
+    asistencia = serializers.SerializerMethodField(read_only=True)
+    
     class Meta:
-        model = Reporte
+        model = Sala
         fields = '__all__'
+        
+    def get_materia(self, obj):
+        materia = obj.materia
+        serializer = MateriaSerializer(materia, many=False)
+        return serializer.data
+        
+    def get_asistencia(self, obj):
+        asistencia = obj.asistencia_set.all()
+        serializer = AsistenciaSerializer(asistencia, many=True)
+        return serializer.data
+
+    
+        
+
+        
+
+        
+
+
+        
+
+

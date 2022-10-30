@@ -17,12 +17,12 @@ class Profesores(models.Model):
 
 
 class Materia(models.Model):
-    
+
     tipos = (
         ('Nocturna', 'Nocturna'),
         ('Diurna', 'Diurna'),
     )
-    
+
     nombre = models.CharField(max_length=50)
     jornada = models.CharField(max_length=50, choices=tipos, default='Diurna')
     profesor = models.ForeignKey(
@@ -40,7 +40,8 @@ class Estudiante(models.Model):
     nombre = models.CharField(max_length=200, null=True, blank=True)
     apellido = models.CharField(max_length=200, null=True, blank=True)
     cedula = models.CharField(max_length=50, null=True, blank=True)
-    materias = models.CharField(max_length=200, null=True, blank=True)
+    materia = models.ForeignKey(
+        Materia, on_delete=models.SET_NULL, null=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
@@ -48,19 +49,7 @@ class Estudiante(models.Model):
         return self.nombre
 
 
-class Llavero(models.Model):
-    tag = models.CharField(max_length=50)
-    tag_status = models.BooleanField(default=False)
-    estudiante = models.ForeignKey(
-        Estudiante, on_delete=models.SET_NULL, null=True)
-    updatedAt = models.DateTimeField(auto_now=True)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    _id = models.AutoField(primary_key=True, editable=False)
-
-    def __str__(self):
-        return self.tag
-    
-
+# product
 class Sala(models.Model):
 
     sedes = (
@@ -79,33 +68,30 @@ class Sala(models.Model):
 
     def __str__(self):
         return self.numero
+    
 
+class Llavero(models.Model):
+    tag = models.CharField(max_length=50)
+    tag_status = models.BooleanField(default=False)
+    estudiante = models.ForeignKey(
+        Estudiante, on_delete=models.SET_NULL, null=True)
+    updatedAt = models.DateTimeField(auto_now=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.tag
+    
 
 class Asistencia(models.Model):
-    estudiante_tag = models.CharField(max_length=50)
-    fecha = models.DateTimeField(auto_now_add=True)
-    createdAt = models.DateTimeField(auto_now_add=True)
     sala = models.ForeignKey(Sala, on_delete=models.SET_NULL, null=True)
-    _id = models.AutoField(primary_key=True, editable=False)
-
-    def __str__(self):
-        return self.estudiante.nombre
-
-
-class Reporte(models.Model):
-    asistencia = models.OneToOneField(
-        Asistencia, on_delete=models.CASCADE, null=True, blank=True)
+    llavero = models.ForeignKey(
+        Llavero, on_delete=models.SET_NULL, null=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return self._id
+        return str(self.sala)
+    
+    
 
-
-class Test(models.Model):
-    tag = models.CharField(max_length=50)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    _id = models.AutoField(primary_key=True, editable=False)
-
-    def __str__(self):
-        return self.nombre

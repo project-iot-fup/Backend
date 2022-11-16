@@ -64,6 +64,7 @@ class Sala(models.Model):
     fecha_inicio = models.DateTimeField(editable=True)
     fecha_fin = models.DateTimeField(editable=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    # estado = models.BooleanField(default=False)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
@@ -87,6 +88,7 @@ class Asistencia(models.Model):
     sala = models.ForeignKey(Sala, on_delete=models.SET_NULL, null=True)
     llavero = models.ForeignKey(
         Llavero, on_delete=models.SET_NULL, null=True)
+    entrada = models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 

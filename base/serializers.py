@@ -46,11 +46,16 @@ class ProfesoresSerializer(serializers.ModelSerializer):
 
 
 class MateriaSerializer(serializers.ModelSerializer):
+    profesor = serializers.SerializerMethodField(read_only=True)
 
     
     class Meta:
         model = Materia
         fields = '__all__'
+        
+    def get_profesor(self, obj):
+        profesor = obj.profesor.nombre
+        return profesor
         
         
 

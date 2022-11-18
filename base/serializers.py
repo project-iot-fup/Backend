@@ -112,6 +112,10 @@ class SalaSerializer(serializers.ModelSerializer):
         asistencia = obj.asistencia_set.all()
         serializer = AsistenciaSerializer(asistencia, many=True)
         return serializer.data
+    
+    
+            
+        
 
     
         

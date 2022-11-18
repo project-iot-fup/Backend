@@ -6,9 +6,9 @@ from rest_framework.response import Response
 
 @api_view(['GET'])
 def getAsistencias(request):
-    asistencias = Sala.objects.all()
-    serializer = SalaSerializer(asistencias, many=True)
-    return Response(serializer.data)
+    salas = Sala.objects.all()
+    serializer = SalaSerializer(salas, many=True)
+    return Response({'salas': serializer.data})
     
 @api_view(['GET'])
 def getAsistencia(request, pk):

@@ -113,6 +113,7 @@ def get_llavero(hexa):
             # si la hora de nuetro equipo esta dentro del rango de la fecha inicio y fecha fin pass
             horas(id_sala)
             # *********
+            print("Test")
             row = curr.fetchone()
             update_llavero(hexa)
             update_asistencia(id_llavero)

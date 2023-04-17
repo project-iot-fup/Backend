@@ -1,13 +1,8 @@
-# Sistema de Ingreso y Asistencia Mediante Sensores 📡
+# Sistema de Gastos 📚
+
+### Descripción 📋
 
 ### Arquitectura del Proyecto 🧱
-
-#### Dispositivos 💻
-
-- [x] Raspberry Pi 3
-- [x] Arduino UNO
-- [x] Tarjeta RFID
-- [x] Sensor o Modulo MFRC-522
 
 #### Tecnologias 🔌
 
@@ -15,13 +10,6 @@
 - [x] Django
 - [x] TailwindCSS
 - [x] PostgreSQL
-
-#### Librerias 📚
-
-- [x] Framer motion
-- [x] Axios
-- [x] Redux
-- [x] Formik
 
 ### Instalación 🔧
 
@@ -31,7 +19,6 @@
 
 ```bash
 # Clonar el repositorio
-$ git clone https://github.com/project-iot-fup/Backend
 $ cd Backend
 # Instalar el entorno virtual
 $ pip install virtualenv
@@ -47,22 +34,11 @@ $ pip install -r requirements.txt
 $ python manage.py runserver
 ```
 
-### **RaspberryPi 3**
-
-```bash
-# Conectar a la RaspberryPi 3
-$ ssh pi@raspberrypi.local
-# Usuarion: pi
-# Contraseña: pi2022*
-```
-
 ### Contribuciones 🖇️
 
 ```bash
-# Materia: Creditos Libres II
+# Materia: Ingenieria de Software II
 $ Manuel Esteban Erazo
-$ Jose Domingo Aranda Calambas
-$ Jhon Leon
 ```
 
 ## Licencia MIT ⚖️

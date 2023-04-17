@@ -55,7 +55,7 @@ def registerUser(request):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def updateUserProfile(request):
+def updateUser(request):
     user = request.user
     serializer = UserSerializerWithToken(user, many=False)
 
@@ -68,14 +68,13 @@ def updateUserProfile(request):
         user.password = make_password(data['password'])
 
     user.save()
-    # profile.save()
 
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getUserProfile(request):
+def getUser(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)

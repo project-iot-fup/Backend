@@ -24,10 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html')),
     path('api/users/', include('base.urls.user_urls')),
-    path('api/estudiantes/', include('base.urls.estudiante_urls')),
-    path('api/asistencias/', include('base.urls.asistencia_urls')),
-    path('api/llaveros/', include('base.urls.llavero_urls')),
-
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
